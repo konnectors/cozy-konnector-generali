@@ -19,7 +19,7 @@ Development status
 This konnector is still under development.
 This is the list of tasks to be done.
 
-- [ ] Login
+- [x] Login
 - [ ] Reimbursment parsing
 - [ ] Reimbursment fetching
 
