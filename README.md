@@ -20,8 +20,13 @@ This konnector is still under development.
 This is the list of tasks to be done.
 
 - [x] Login
-- [ ] Reimbursment parsing
-- [ ] Reimbursment fetching
+- [x] Reimbursment parsing
+- [x] Reimbursment fetching
+- [ ] User `saveBills` instead of `saveFiles`
+- [ ] Enhance testing
+- [ ] Evaluate needs and possibilities of using `isThirdPartyPayer`
+- [ ] Enhance code base : coding practices & style
+- [ ] Enhance error handling coverage
 
 What data is imported ?
 -----------------------

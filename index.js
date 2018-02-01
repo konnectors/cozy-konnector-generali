@@ -1,5 +1,5 @@
 const { BaseKonnector } = require('cozy-konnector-libs')
-const { login, noop } = require('./lib')
+const { login, releves } = require('./lib')
 
 const reducePromises = function (promises, that /* , args... */) {
   return promises.reduce((agg, promiseMaker) => {
@@ -36,7 +36,7 @@ class Konnector extends BaseKonnector {
   fetch (fields) {
     this.fields = fields
     this.fetchers = [login]
-    this.exporters = [noop]
+    this.exporters = [releves]
     return this.runFetchers().then(() => this.runExporters())
   }
 }
