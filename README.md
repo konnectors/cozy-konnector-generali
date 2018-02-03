@@ -22,7 +22,7 @@ This is the list of tasks to be done.
 - [x] Login
 - [x] Reimbursment parsing
 - [x] Reimbursment fetching
-- [ ] User `saveBills` instead of `saveFiles`
+- [x] Use `saveBills` instead of `saveFiles`
 - [ ] Enhance testing
 - [ ] Evaluate needs and possibilities of using `isThirdPartyPayer`
 - [ ] Enhance code base : coding practices & style
