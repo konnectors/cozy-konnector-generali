@@ -7,13 +7,15 @@
   "source": "git://github.com/carrieje/cozy-konnector-generali.git",
   "locales": {
     "fr": {
-      "description": "Récupère toutes vos factures",
       "permissions": {
         "bills": {
           "description": "Utilisé pour sauvegarder les données de facturation"
         },
         "files": {
           "description": "Utilisé pour sauvegarder les factures"
+        },
+        "accounts": {
+          "description": "Utilisé pour récupérer les informations de votre compte"
         }
       }
     }

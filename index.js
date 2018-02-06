@@ -4,7 +4,7 @@ const { exportReimbursements } = require('./lib/reimbursements')
 
 module.exports = new BaseKonnector(start)
 
-function start(fields) {
+function start (fields) {
   return login(fields)
   .then(exportReimbursements)
 }

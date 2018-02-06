@@ -6,13 +6,12 @@ module.exports = {
   target: 'node',
   output: {
     path: path.join(__dirname, 'build'),
-    filename: 'index.js'
+    filename: 'konnector.js'
   },
   plugins: [
     new CopyPlugin([
       { from: 'manifest.konnector' },
       { from: 'package.json' },
-      { from: 'yarn.lock' },
       { from: 'README.md' },
       { from: 'LICENSE' }
     ])
