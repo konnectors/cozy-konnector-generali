@@ -22,7 +22,7 @@ This is the list of tasks to be done.
 - [x] Login
 - [x] Reimbursment parsing and fetching using `saveBills`
 - [ ] Enhance testing
-- [ ] Evaluate needs and possibilities of using `isThirdPartyPayer`
+- [x] Evaluate needs and possibilities of using `isThirdPartyPayer`
 - [x] Enhance code base : coding practices & style
 - [x] Enhance error handling coverage
 
