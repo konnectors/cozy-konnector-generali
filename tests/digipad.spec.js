@@ -1,9 +1,9 @@
 const { encode, deduce } = require('../lib/digipad')
 
-test('deduce', function() {
+test('deduce', function () {
   expect(deduce.size).toBe(10)
   const digits = []
-  deduce.forEach(function(value, key, map) { digits.push(value) })
+  deduce.forEach(function (value, key, map) { digits.push(value) })
   expect(digits.sort()).toEqual('0123456789'.split('').sort())
 })
 
