@@ -17,12 +17,12 @@
     "standard": "^10.0.3"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "cozy-run-dev",
-    "standalone": "cozy-run-standalone",
+    "start": "node src/index.js",
+    "dev": "cozy-run-dev src/index.js",
+    "standalone": "cozy-run-standalone src/index.js",
     "build": "webpack",
     "test": "jest",
-    "lint": "standard --fix index.js lib/*",
+    "lint": "standard --fix src/*",
     "deploy:travis": "git-directory-deploy --username <YOUR_GH_USERNAME> --email <YOUR_EMAIL> --directory build/ --repo=https://$GITHUB_TOKEN@github.com/<USERNAME_GH>/<SLUG_GH>.git",
     "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/carrieje/cozy-konnector-generali.git"
   },

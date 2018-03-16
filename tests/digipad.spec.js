@@ -1,4 +1,4 @@
-const { encode, deduce } = require('../lib/digipad')
+const { encode, deduce } = require('../src/digipad')
 
 test('deduce', function () {
   expect(deduce.size).toBe(10)

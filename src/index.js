@@ -1,7 +1,7 @@
 const rqErrs = require('request-promise/errors')
 const { BaseKonnector, errors, log } = require('cozy-konnector-libs')
-const { login } = require('./lib/login')
-const { exportReimbursements } = require('./lib/reimbursements')
+const { login } = require('./login')
+const { exportReimbursements } = require('./reimbursements')
 
 module.exports = new BaseKonnector(start)
 
