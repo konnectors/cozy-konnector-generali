@@ -1,7 +1,8 @@
-const { requestFactory, saveBills } = require('cozy-konnector-libs')
+const { errors, log, requestFactory, saveBills } = require('cozy-konnector-libs')
 const { formatDate, formatName, getText, parseAmount, parseDate } = require('./utils')
 
 const request = requestFactory({
+  encoding: 'latin1',
   cheerio: true,
   json: false,
   jar: true
@@ -15,6 +16,14 @@ module.exports.exportReimbursements = function (folderPath) {
   return request(relevesUrl)
   .then($ => {
     const parseEntries = []
+
+    // If website is under maintenance
+    const errorService = $('#remboursementSante .cadreErrorService')
+    if (errorService.length !== 0) {
+      log('error', errorService.text().trim())
+      throw new Error(errors.VENDOR_DOWN)
+    }
+
     $('#remboursementSante table tbody tr').each(function () {
       const summary = parseSummary($, $(this).children('td'))
       parseEntries.push(parseEntriesFor(summary))
