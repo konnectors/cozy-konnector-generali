@@ -18,7 +18,7 @@ module.exports.login = function (fields) {
     const [action, inputs] = formContent($, 'generali-connexion-form')
     const table = getConversionTable($)
     inputs.identifiant = fields.login
-    inputs.keyboard = encode(fields.passcode, table)
+    inputs.keyboard = encode(fields.password, table)
 
     return [action, inputs]
   })
