@@ -22,7 +22,7 @@
     "standalone": "cozy-run-standalone",
     "build": "webpack",
     "test": "jest",
-    "lint": "standard --fix konnector.js",
+    "lint": "standard --fix index.js lib/*",
     "deploy:travis": "git-directory-deploy --username <YOUR_GH_USERNAME> --email <YOUR_EMAIL> --directory build/ --repo=https://$GITHUB_TOKEN@github.com/<USERNAME_GH>/<SLUG_GH>.git",
     "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/carrieje/cozy-konnector-generali.git"
   },

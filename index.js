@@ -27,7 +27,7 @@ function isRequestErr (err) {
 
 function vendorIsDown (err) {
   return (
-    (err instanceof rqErrs.StatusCodeError && parseInt(err.statusCode / 100) == 5) ||
-    (err instanceof rqErrs.RequestError && (err.error.code == 'ENOTFOUND' || err.error.code == 'ECONNRESET'))
+    (err instanceof rqErrs.StatusCodeError && parseInt(err.statusCode / 100) === 5) ||
+    (err instanceof rqErrs.RequestError && (err.error.code === 'ENOTFOUND' || err.error.code === 'ECONNRESET'))
   )
 }
