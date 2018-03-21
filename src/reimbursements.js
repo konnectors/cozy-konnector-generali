@@ -1,8 +1,8 @@
 const { errors, log, requestFactory, saveBills } = require('cozy-konnector-libs')
 const { formatDate, formatName, getText, parseAmount, parseDate } = require('./utils')
+const stream = require('stream')
 
 const request = requestFactory({
-  encoding: 'latin1',
   cheerio: true,
   json: false,
   jar: true
@@ -35,10 +35,10 @@ module.exports.exportReimbursements = function (folderPath) {
     })
   })
   .then(entries => {
-    saveBills(
+    return saveBills(
       entries,
       {folderPath: folderPath},
-      {identifiers: ['generali'], keys: ['date', 'amount', 'vendor']}
+      {identifiers: ['generali'], keys: ['date', 'amount', 'vendor'], contentType: 'application/pdf'}
     )
   })
 }
@@ -61,7 +61,9 @@ function parseEntriesFor ({detailsUrl, beneficiary, date, fileUrl}) {
     isThirdPartyPayer: true
   }
   if (fileUrl !== undefined) {
-    common.fileurl = `${baseUrl}${fileUrl}`
+    const pdfStream = new stream.PassThrough()
+    rq = requestFactory({cheerio: false, json: false})
+    common.filestream = rq(`${baseUrl}${fileUrl}`).pipe(pdfStream)
     common.filename = `${formatDate(date)}_generali.pdf`
     common.isThirdPartyPayer = false
     // Based on the asumption that Generali provides a report only if the person
