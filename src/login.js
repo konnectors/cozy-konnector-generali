@@ -35,10 +35,10 @@ function evaluateSuccess ($, step) {
   const error = $('#generali_error_messages')
   if (error.length >= 1 && error.html().trim() !== '') {
     log('error', `Login process [${step}/2] failed`)
-    log('debug', error.text())
+    log('info', error.text())
     throw new Error(errors.LOGIN_FAILED)
   } else {
-    log('ok', `Login process [${step}/2]`)
+    log('info', `Login process [${step}/2]`)
   }
 }
 

@@ -4,7 +4,7 @@
   "description": "",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cozy/cozy-konnector-template.git"
+    "url": "git+https://github.com/cozy/cozy-konnector-generali.git"
   },
   "keywords": [],
   "author": "",
@@ -24,9 +24,11 @@
     "test": "jest",
     "lint": "standard --fix src/*",
     "deploy:travis": "git-directory-deploy --username <YOUR_GH_USERNAME> --email <YOUR_EMAIL> --directory build/ --repo=https://$GITHUB_TOKEN@github.com/<USERNAME_GH>/<SLUG_GH>.git",
-    "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/carrieje/cozy-konnector-generali.git"
+    "deploy": "git-directory-deploy --directory build/ --branch build --repo=git@github.com:doubleface/cozy-konnector-generali.git"
   },
   "devDependencies": {
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "copy-webpack-plugin": "^4.0.1",
     "git-directory-deploy": "^1.5.1",
     "webpack": "^3"
