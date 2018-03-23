@@ -3,7 +3,7 @@ const { encode, deduce } = require('../src/digipad')
 test('deduce', function () {
   expect(deduce.size).toBe(10)
   const digits = []
-  deduce.forEach(function (value, key, map) { digits.push(value) })
+  deduce.forEach(function (value) { digits.push(value) })
   expect(digits.sort()).toEqual('0123456789'.split('').sort())
 })
 
