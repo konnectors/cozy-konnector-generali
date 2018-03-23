@@ -62,7 +62,7 @@ function parseEntriesFor ({detailsUrl, beneficiary, date, fileUrl}) {
   }
   if (fileUrl !== undefined) {
     const pdfStream = new stream.PassThrough()
-    rq = requestFactory({cheerio: false, json: false})
+    const rq = requestFactory({cheerio: false, json: false})
     common.filestream = rq(`${baseUrl}${fileUrl}`).pipe(pdfStream)
     common.filename = `${formatDate(date)}_generali.pdf`
     common.isThirdPartyPayer = false
