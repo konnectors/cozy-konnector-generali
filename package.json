@@ -11,9 +11,7 @@
   "license": "AGPL-3.0",
   "main": "src/index.js",
   "renovate": {
-    "extends": [
-      "config:base"
-    ],
+    "extends": ["config:base"],
     "patch": {
       "automerge": true
     }
@@ -24,19 +22,14 @@
       "jest": true,
       "node": true
     },
-    "extends": [
-      "eslint:recommended",
-      "prettier"
-    ],
+    "extends": ["eslint:recommended", "prettier"],
     "parserOptions": {
       "ecmaFeatures": {
         "experimentalObjectRestSpread": true
       }
     }
   },
-  "eslintIgnore": [
-    "build"
-  ],
+  "eslintIgnore": ["build"],
   "scripts": {
     "start": "node src/index.js",
     "dev": "cozy-run-dev src/index.js",
@@ -46,8 +39,10 @@
     "format": "prettier --write '**/*.{js,json}'",
     "precommit": "eslint .",
     "lint": "eslint .",
-    "deploy": "git-directory-deploy --directory build/ --branch build --repo=https://github.com/konnectors/cozy-konnector-generali.git",
-    "deploy:prod": "git-directory-deploy --directory build/ --branch latest --repo=https://github.com/konnectors/cozy-konnector-generali.git"
+    "deploy":
+      "git-directory-deploy --directory build/ --branch build --repo=https://github.com/konnectors/cozy-konnector-generali.git",
+    "deploy:prod":
+      "git-directory-deploy --directory build/ --branch latest --repo=https://github.com/konnectors/cozy-konnector-generali.git"
   },
   "dependencies": {
     "cozy-jobs-cli": "^1.0.3",
