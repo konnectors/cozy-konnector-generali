@@ -1,0 +1,28 @@
+language: node_js
+node_js:
+  - '8'
+env:
+  global:
+    # kosssi GITHUB_TOKEN
+    - secure: "c4Mdc0HhRtDzi4U3ykwPawh7NvfkpDRzhQlBn0tG31YjZQ1Q2/IUHfKB/nQ1e/xMin8lg4UT/S3UxQZv3+9dn87LfrEBDw7HAmTOQi8uay2Nvvgjo3lpj3DA/YDbTXtvrVx529CfRohCYsVSAJy8QVyFnN1XXyHd2jV3P1JtWNastpKVqqVPXvO8O53GXQvLO4W2z738Z4JjzfCxeItGxhjc45kxwHvN//+VXO9qvJ31IsUPjGopReCf6SaATIVa5v3s6aNvbw83t5eB87O28CIhmjB2naG990D8mEZDsdHXCiyTS8l/qyEtZL8lxnWpySL+m0p0LZ31CFynq25fB1ZC1KdQQoxHZxpxriUxR1MTcU8QrCl0dAmm+aEGRh2b/qp0vfKnB21YayxWJkquli4PeD/MBQFTd6CHH8ZWMOvlHF4UR29Hh5A9l1jXbJfSwulbIF8Pv8ThqY/YNjD0qCQ9D19/lsXhghMBGUEsZKgUvdpgZ2YjE6eBwRFFe0bp85UBa1WaX3Uam5cMaKfCB75Vo3cP/m6VyB6QXSzmdb36KmWF8zY4TBIEVVsis4lFXV7ZDQ9Wpr2bUzq13q3YNngzF2/8+dPs4g+aqIRhz9LniHHDLKzd3gM9adXd5Befmj3GFcVvYGI/6JJuwc6nmxMzKHSv/348knebx44O4AQ="
+cache:
+  yarn: true
+  directories:
+    - node_modules
+script:
+  - yarn build
+  - yarn lint
+  - if [ $TRAVIS_SECURE_ENV_VARS = "true" ]; then yarn test; fi
+deploy:
+  - provider: script
+    repo: konnectors/cozy-konnector-generali
+    skip-cleanup: true
+    script: yarn deploy
+    on:
+      branch: master
+  - provider: script
+    repo: konnectors/cozy-konnector-generali
+    skip-cleanup: true
+    script: yarn deploy:prod
+    on:
+      branch: prod
