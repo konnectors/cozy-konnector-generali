@@ -1,12 +1,12 @@
-var path = require("path");
-const CopyPlugin = require("copy-webpack-plugin");
+var path = require('path')
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = {
-  entry: "./src/index.js",
-  target: "node",
+  entry: './src/index.js',
+  target: 'node',
   output: {
-    path: path.join(__dirname, "build"),
-    filename: "index.js"
+    path: path.join(__dirname, 'build'),
+    filename: 'index.js'
   },
 
   module: {
@@ -14,17 +14,17 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /(node_modules|cozy-(bar|client-js))/,
-        loader: "babel-loader"
+        loader: 'babel-loader'
       }
     ]
   },
 
   plugins: [
     new CopyPlugin([
-      { from: "manifest.konnector" },
-      { from: "package.json" },
-      { from: "README.md" },
-      { from: "LICENSE" }
+      { from: 'manifest.konnector' },
+      { from: 'package.json' },
+      { from: 'README.md' },
+      { from: 'LICENSE' }
     ])
   ]
-};
+}
