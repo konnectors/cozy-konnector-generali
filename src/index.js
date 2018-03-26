@@ -1,3 +1,9 @@
+// Force sentry DSN into environment variables
+// In the future, will be set by the stack
+process.env.SENTRY_DSN =
+  process.env.SENTRY_DSN ||
+  'https://104958ead19c447a9596339f426022d3@sentry.cozycloud.cc/29'
+
 const rqErrs = require('request-promise/errors')
 const { BaseKonnector, errors, log } = require('cozy-konnector-libs')
 const { login } = require('./login')
