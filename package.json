@@ -38,8 +38,8 @@
     "deploy:prod": "git-directory-deploy --directory build/ --branch latest --repo=https://github.com/konnectors/cozy-konnector-generali.git"
   },
   "dependencies": {
-    "cozy-jobs-cli": "1.0.3",
-    "cozy-konnector-libs": "3.7.2",
+    "cozy-jobs-cli": "^1.0.6",
+    "cozy-konnector-libs": "^3.7.4",
     "request-promise": "4.2.2"
   },
   "devDependencies": {
