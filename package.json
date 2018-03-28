@@ -35,6 +35,7 @@
     "precommit": "eslint .",
     "lint": "eslint .",
     "deploy": "git-directory-deploy --directory build/ --branch build --repo=${DEPLOY_REPOSITORY:-https://$GITHUB_TOKEN@github.com/konnectors/cozy-konnector-generali.git}",
+    "deploy:debug": "git-directory-deploy --directory build/ --branch build-debug --repo=git@github.com:doubleface/cozy-konnector-generali.git",
     "deploy:prod": "git-directory-deploy --directory build/ --branch latest --repo=${DEPLOY_REPOSITORY:-https://$GITHUB_TOKEN@github.com/konnectors/cozy-konnector-generali.git}"
   },
   "dependencies": {
