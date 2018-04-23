@@ -1,46 +1,40 @@
-const { errors, log, requestFactory } = require('cozy-konnector-libs')
+const { log, signin } = require('cozy-konnector-libs')
 const { encode, deduce } = require('./digipad')
-
-const request = requestFactory({
-  cheerio: true,
-  json: false,
-  jar: true
-})
 
 const baseUrl = 'https://www.generali.fr'
 
 module.exports.login = function(fields) {
-  const firstStepUrl = `${baseUrl}/espace-client/public/connexion`
-  const secondStepUrl = `${baseUrl}/espace-client/private/individuel/redirect-ece-eca`
-
-  return request(firstStepUrl)
-    .then($ => {
-      const [action, inputs] = formContent($, 'generali-connexion-form')
-      const table = getConversionTable($)
-      inputs.identifiant = fields.login
-      inputs.keyboard = encode(fields.password, table)
-
-      return [action, inputs]
+  return signin({
+    url: `${baseUrl}/espace-client/public/connexion`,
+    formSelector: '#generali-connexion-form',
+    formData: $ => ({
+      identifiant: fields.login,
+      keyboard: encode(fields.password, getConversionTable($))
+    }),
+    parse: 'cheerio',
+    validate: validateStep(1)
+  }).then(() =>
+    signin({
+      url: `${baseUrl}/espace-client/private/individuel/redirect-ece-eca`,
+      formSelector: '#generali-connexion-ece-eca-form',
+      parse: 'cheerio',
+      validate: validateStep(2)
     })
-    .then(([action, inputs]) => post(`${baseUrl}${action}`, inputs))
-    .then($ => evaluateSuccess($, '1'))
-    .then(() => request(secondStepUrl))
-    .then($ => formContent($, 'generali-connexion-ece-eca-form'))
-    .then(([action, inputs]) => post(action, inputs))
-    .then($ => evaluateSuccess($, '2'))
+  )
 }
 
-function evaluateSuccess($, step) {
-  // log('info', $('#block-generali-topbar-topbar-accueil-client').text())
-  const error = $('#generali_error_messages')
-  if (error.length >= 1 && error.html().trim() !== '') {
-    log('error', `Login process [${step}/2] failed`)
-    log('info', error.text())
-    throw new Error(errors.LOGIN_FAILED)
-  } else {
-    log('info', `Login process [${step}/2]`)
+const validateStep = step =>
+  function(statusCode, $) {
+    const error = $('#generali_error_messages')
+    if (error.length >= 1 && error.html().trim() !== '') {
+      log('error', `Login process [${step}/2] failed`)
+      log('info', error.text())
+      return false
+    } else {
+      log('info', `Login process [${step}/2]`)
+      return true
+    }
   }
-}
 
 function getConversionTable($) {
   const table = new Map()
@@ -58,23 +52,4 @@ function getConversionTable($) {
       table.set(digit, value)
     })
   return table
-}
-
-function formContent($, formId) {
-  const action = $(`#${formId}`).attr('action')
-  const inputs = {}
-  $(`#${formId} input`).each(function() {
-    inputs[$(this).attr('name')] = $(this).attr('value')
-  })
-  return [action, inputs]
-}
-
-function post(uri, inputs) {
-  return request({
-    uri: uri,
-    method: 'POST',
-    form: {
-      ...inputs
-    }
-  })
 }
