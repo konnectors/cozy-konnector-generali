@@ -3,7 +3,8 @@ module.exports.arrayFrom$row = function arrayFrom$row($, $row) {
 }
 
 module.exports.parseDate = function parseDate(text) {
-  return new Date(...text.split('/').reverse())
+  const [d, m, y] = text.split('/', 3).map(e => parseInt(e, 10))
+  return new Date(y, m - 1, d)
 }
 
 module.exports.parseAmount = function parseAmount(amount) {
