@@ -9,15 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "AGPL-3.0",
-  "main": "src/index.js",
-  "renovate": {
-    "extends": [
-      "config:base"
-    ],
-    "patch": {
-      "automerge": true
-    }
-  },
+  "main": "./src/index.js",
   "eslintConfig": {
     "extends": [
       "eslint-config-cozy-app"
@@ -27,31 +19,35 @@
     "build"
   ],
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "cozy-run-dev src/index.js",
+    "start": "node ./src/index.js",
+    "dev": "cozy-run-dev",
     "standalone": "cozy-run-standalone",
+    "check": "konitor check .",
     "build": "webpack",
     "test": "jest",
-    "precommit": "eslint .",
-    "lint": "eslint .",
-    "deploy": "git-directory-deploy --directory build/ --branch build --repo=${DEPLOY_REPOSITORY:-https://$GITHUB_TOKEN@github.com/konnectors/cozy-konnector-generali.git}",
-    "deploy:debug": "git-directory-deploy --directory build/ --branch build-debug --repo=git@github.com:doubleface/cozy-konnector-generali.git",
-    "deploy:prod": "git-directory-deploy --directory build/ --branch latest --repo=${DEPLOY_REPOSITORY:-https://$GITHUB_TOKEN@github.com/konnectors/cozy-konnector-generali.git}"
+    "precommit": "yarn lint",
+    "lint": "eslint --fix .",
+    "deploy": "git-directory-deploy --directory build/ --branch ${DEPLOY_BRANCH:-build} --repo=${DEPLOY_REPOSITORY:-https://$GITHUB_TOKEN@github.com/konnectors/cozy-konnector-generali.git}",
+    "cozyPublish": "cozy-app-publish --token $REGISTRY_TOKEN --build-commit $(git rev-parse ${DEPLOY_BRANCH:-build})",
+    "travisDeployKey": "./bin/generate_travis_deploy_key"
   },
   "dependencies": {
-    "cozy-jobs-cli": "^1.0.6",
-    "cozy-konnector-libs": "^3.7.4",
+    "cozy-konnector-libs": "4.2.0",
     "request-promise": "4.2.2"
   },
   "devDependencies": {
     "babel-loader": "7.1.4",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "copy-webpack-plugin": "4.5.1",
+    "cozy-app-publish": "0.3.6",
+    "cozy-jobs-cli": "1.1.0",
     "eslint": "4.19.1",
-    "eslint-config-cozy-app": "0.5.1",
+    "eslint-config-cozy-app": "0.7.3",
     "git-directory-deploy": "1.5.1",
-    "jest": "22.4.3",
-    "webpack": "4.4.1",
-    "webpack-cli": "2.0.13"
+    "husky": "0.14.3",
+    "jest": "22.4.4",
+    "konitor": "0.8.3",
+    "webpack": "4.8.3",
+    "webpack-cli": "2.1.3"
   }
 }
