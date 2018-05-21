@@ -1,39 +1,41 @@
 language: node_js
 node_js:
-  - '8'
+- '8'
 env:
   global:
-    # cozy-bot GITHUB_TOKEN
-    # to generate yours : travis encrypt GITHUB_TOKEN=<your_GITHUB_TOKEN> -r konnectors/cozy-konnector-generali
-    - secure: "KUe5cqHggiRxh8hgeZeO2OdEmuZDWv+Mu0fPXkV/aWz4HPzZy9zYfeus9azBM8fUXDS5tnneZWM3IMMTvy4UpOV7nmiv3okfJ3pjFX7R3NgFijoeQL/BLVv43ywBe1un7CYGnxezUzs83eXIqnK0Gs32LNMI/vBu6FWFVftIMVjfHUB7wYAk3m6alJRSd7/SVYBsF9blYuNHEm4Ln4TAxxnEFv39Dob8TOz8Gq/vt8J0wUUqu/ZEWf/1EcPTJO1Yw5V5048W3N2rGvRRhKEj8c9RpQ+MCXfXrmd/Vi0x5BTLUsKgJbTTz1g5gtTp2yN6coAvQ0I7pRbnNgKVbGdqezPo5lJNwie9R8by+9SiuxsoFZBtJpb1TXC9eNDsLxX+EfLT1Gkxr8Ilhjq/4vW8WZhDAYWhWxT39iRk+63k/j/VTpag3a8WGirfFKiKC3DIIsECvtb7j9gZSs9tQbXu+/MfnhUAA6KjhU30dgeA9HvLxULblp4d9JG4wq4En1zKjNikEt1Wewabrk3ik+e4KMiIXJYGK6mBPfNiCmW7TBBXcWmbbwOFGdMcZl8qXNXrlXvvpepYB+w2k0eMD7JvjwkxiJKuiGnpoVmZxDLjvi+o1mhi53BOFWpn2EKwkCt4e/dsjYOd17PePZMRbUPy1HzKGvziY2DAPVUz94n7coI="
-    # Cozy REGISTRY_TOKEN
-    - secure: "x9UUTdClndjsw2qm7Wmd4TXW6DUJRu6pVzJCX0LnB6iE28zAQkZaJNMy0h/hZgI2qBsH6ybPofKur2JqibmSVb8vhnVcb7Mt7GGJpZKQcNLgNm7y7DRsp1xEknCWkn6d/UH+/L3USylC6M3nurnVQ4H0j7MX0aOur+wke2JaxXQEYGVAdl3tZ6xHhbUQEJfUZi2b1AZ7+19slMp1UoNxi3BLoMuJNWzj+xZm39bLyNTJxgd5QWriJ4bK+PMnOQR+Y4HpvWF9EAPNbhkGOrqgIthufu34/EMmYlrBbAbi5ME4PYjzn9erJIA0r2sQU9E+zCGmVvsnLw1x4V1U3ih4YX54ASxe8s15GjidvjQ4fOTK232MtX2MpvdqQI10+8CYQC3vzqMT+xp03uQbY4CZsxDPLBgMgRuAenpNjTu6bhYbsBtTjvMFDZ5FIjrimK27qm4s/DFlYipIRMtJomttpwWjlsOXuETWcR+VlhSZ55sy5OQrsMcrPJ4g3G8x4Cr3OVJKZaH3kRLEjTNiDHX2O5DpQOgjA6H4ZgnjevjbLT1mA29uiyWL6cmcC+ul3M9M9UUR5+F1WQtrUl76qAdnNzEz8LdHTAIHZHG4gqHmpvrTj84hBcwVnYjvRKt/zptgLI29lq7yYOYbGKUs6dEm8XqBni0xvSZGpBcyflH5mo8="
+  - GH_USER_EMAIL="travis@example.org"
+  - GH_USER_NAME="cozy-bot"
+  - DEPLOY_REPOSITORY="git@github.com:konnectors/cozy-konnector-generali.git"
 cache:
   yarn: true
   directories:
-    - node_modules
+  - node_modules
 script:
-  - yarn lint
-  - yarn build
+- yarn lint
+- yarn build
 deploy:
-  # publish dev versions
-  - provider: script
-    repo: konnectors/cozy-konnector-generali
-    skip-cleanup: true
-    script: DEPLOY_BRANCH=build yarn deploy && yarn cozyPublish
-    on:
-      branch: master
-  # publish on latest branch (will be removed when collect will use only the registry
-  - provider: script
-    repo: konnectors/cozy-konnector-generali
-    skip-cleanup: true
-    script: DEPLOY_BRANCH=latest yarn deploy
-    on:
-      branch: prod
-  # publish stable versions and beta versions based on tags
-  - provider: script
-    repo: konnectors/cozy-konnector-generali
-    skip-cleanup: true
-    script: DEPLOY_BRANCH=build yarn deploy && yarn cozyPublish
-    on:
-      tags: true
+- provider: script
+  skip-cleanup: true
+  script: DEPLOY_BRANCH=build yarn deploy
+  # script: DEPLOY_BRANCH=build yarn deploy && yarn cozyPublish
+  on:
+    branch: master
+- provider: script
+  skip-cleanup: true
+  script: DEPLOY_BRANCH=latest yarn deploy
+  on:
+    branch: prod
+# - provider: script
+#   skip-cleanup: true
+#   script: DEPLOY_BRANCH=build yarn deploy && yarn cozyPublish
+#   on:
+#     tags: true
+before_install:
+- openssl aes-256-cbc -K $encrypted_b154f9a4f1bc_key -iv $encrypted_b154f9a4f1bc_iv
+  -in github_deploy_key.enc -out /tmp/github_deploy_key -d
+- eval "$(ssh-agent -s)"
+- chmod 600 /tmp/github_deploy_key
+- ssh-add /tmp/github_deploy_key
+after_deploy:
+- rm /tmp/github_deploy_key
+- ssh-add -D

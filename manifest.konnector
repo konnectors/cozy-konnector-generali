@@ -5,7 +5,7 @@
   "language": "node",
   "icon": "icon.svg",
   "slug": "generali",
-  "source": "git://github.com/konnectors/cozy-konnector-generali.git",
+  "source": "git@github.com:konnectors/cozy-konnector-generali.git",
   "editor": "Jeremy Carrier",
   "vendor_link": "https://www.generali.fr/espace-client/public/connexion",
   "categories": ["insurance"],
@@ -28,7 +28,6 @@
   "data_types": [
     "bill"
   ],
-  "screenshots": [ "screenshots/screenshot1.png" ],
   "permissions": {
     "bank operations": {
       "type": "io.cozy.bank.operations"
@@ -47,7 +46,7 @@
   "developer": {
     "name": "Jeremy Carrier",
     "url": "https://github.com/carrieje"
-  }
+  },
   "langs": ["fr", "en"],
   "locales": {
     "fr": {
@@ -76,7 +75,7 @@
           "description": "Required to link bank operations to bills"
         },
         "bills": {
-          "description": "Required to save the bills data",
+          "description": "Required to save the bills data"
         },
         "files": {
           "description": "Required to save the bills"
