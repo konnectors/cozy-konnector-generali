@@ -6,30 +6,29 @@ env:
   - GH_USER_EMAIL="travis@example.org"
   - GH_USER_NAME="cozy-bot"
   - DEPLOY_REPOSITORY="git@github.com:konnectors/cozy-konnector-generali.git"
+  - secure: gLcXTHvokX+sdTRBBNY2enNbnnXpB4WxT4cuawKimZ5OCz3YvTVB+modwoifvHC/csJOMf/wc2ktBxf9kKxlrS+WJXwDbm3dMqjAQfqOAy6MaQGm6++5jklbCY2Tqr2iMgyGKRjnwMvqIU6whbrM788+AbtSTMSJ2CBkvCcLv8V+4zbPzfmhUypR1cazo+rQTU63wzmr6bpNRtWcL0jh+dPBF1AyKAL81iEO4mwiN1ejUgdcPvKanG1TJZjtOGSi7PQUxZpCmXXSAcgjcMX3Eido17BhNR6vax5x29viMV7tjHIa4iZOW7lK1058M8GWsrsFJVFrGmtVg/38dt6eup3oSvChNLiVR+ATPwTLCQeuQDQYHvP3xr2KVcDl8nbgATMXxLD8GBE2z2RwD1qXxNt8wmu7Rxy3CWJsdEtqYav2BITM9o4ejenTHElyEXiXH4TOrJY/hh6OauPdeK8z+m1s1eNL1sy4N8jpoZXtKvoxVeABIJUDAyiX57faQzD7/6ipH87OnYN1D97iaplEVgx131/RaoKoZmqbY27RwIcNwKp+Nxl6S/rbLEAiYkZn4eEomg7ywYRicie8iPcSPjNxQgEhBnn9Ns3SDVkFbUv6rb1jjho66aapQivc+VXpT56sh+WcPXDdPa1AXOASQuP947ZbyEDSX9zt2IvFLRA=
 cache:
   yarn: true
   directories:
   - node_modules
+branches:
+  except:
+  - build
+  - latest
 script:
 - yarn lint
 - yarn build
 deploy:
 - provider: script
   skip-cleanup: true
-  script: DEPLOY_BRANCH=build yarn deploy
-  # script: DEPLOY_BRANCH=build yarn deploy && yarn cozyPublish
+  script: DEPLOY_BRANCH=build yarn deploy && yarn cozyPublish
   on:
     branch: master
 - provider: script
   skip-cleanup: true
-  script: DEPLOY_BRANCH=latest yarn deploy
+  script: DEPLOY_BRANCH=build yarn deploy && yarn cozyPublish
   on:
-    branch: prod
-# - provider: script
-#   skip-cleanup: true
-#   script: DEPLOY_BRANCH=build yarn deploy && yarn cozyPublish
-#   on:
-#     tags: true
+    tags: true
 before_install:
 - openssl aes-256-cbc -K $encrypted_b154f9a4f1bc_key -iv $encrypted_b154f9a4f1bc_iv
   -in github_deploy_key.enc -out /tmp/github_deploy_key -d
