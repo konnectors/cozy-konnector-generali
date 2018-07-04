@@ -86,5 +86,6 @@
       }
     }
   },
+  "banksTransactionRegExp": "\\bgenerali\\b",
   "manifest_version": "2"
 }
