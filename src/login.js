@@ -1,40 +1,46 @@
-const { log, signin } = require('cozy-konnector-libs')
+const { log, requestFactory, errors } = require('cozy-konnector-libs')
 const { encode, deduce } = require('./digipad')
+const request = requestFactory({
+  cheerio: true,
+  //  debug: true,
+  jar: true
+})
 
 const baseUrl = 'https://www.generali.fr'
 
 module.exports.login = function(fields) {
-  return signin({
-    url: `${baseUrl}/espace-client/public/connexion`,
-    formSelector: '#generali-connexion-form',
-    formData: $ => ({
-      identifiant: fields.login,
-      keyboard: encode(fields.password, getConversionTable($))
-    }),
-    parse: 'cheerio',
-    validate: validateStep(1)
-  }).then(() =>
-    signin({
-      url: `${baseUrl}/espace-client/private/individuel/redirect-ece-eca`,
-      formSelector: '#generali-connexion-ece-eca-form',
-      parse: 'cheerio',
-      validate: validateStep(2)
+  return request({
+    url: `${baseUrl}/espace-client/public/connexion`
+  })
+    .then($ => {
+      log('debug', 'Form fetched, launching login')
+      return request({
+        url: `${baseUrl}/espace-client/public/connexion`,
+        method: 'POST',
+        formData: {
+          identifiant: fields.login,
+          keyboard: encode(fields.password, getConversionTable($)),
+          op: 'Connexion',
+          form_id: 'generali_connexion_form',
+          form_build_id: $(
+            '#generali-connexion-form input[name=form_build_id]'
+          ).val()
+        }
+      })
     })
-  )
+    .then($ => {
+      log('debug', 'Testing for login_failed')
+      if (
+        $.html().includes('Vos codes d&apos;acc&#xE8;s ne sont pas reconnus')
+      ) {
+        log('error', `Generali indicates that credentials is bad`)
+        throw new Error(errors.LOGIN_FAILED)
+      }
+      else {
+        log('info', 'Login succeed')
+      }
+    })
 }
-
-const validateStep = step =>
-  function(statusCode, $) {
-    const error = $('#generali_error_messages')
-    if (error.length >= 1 && error.html().trim() !== '') {
-      log('error', `Login process [${step}/2] failed`)
-      log('info', error.text())
-      return false
-    } else {
-      log('info', `Login process [${step}/2]`)
-      return true
-    }
-  }
 
 function getConversionTable($) {
   const table = new Map()
