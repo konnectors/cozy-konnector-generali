@@ -27,13 +27,16 @@ module.exports.login = async function(fields) {
     }
   })
   log('debug', 'Testing for LOGIN_FAILED')
-  if (
-    $.html().includes('Vos codes d&apos;acc&#xE8;s ne sont pas reconnus')) {
+  if ($.html().includes('Vos codes d&apos;acc&#xE8;s ne sont pas reconnus')) {
     log('error', `Generali indicates that credentials is bad`)
     throw new Error(errors.LOGIN_FAILED)
-  }
-  else {
+  } else if ($('.consulter-mes-remboursements')) {
     log('info', 'Login succeed')
+    const rembLink = baseUrl + $('.consulter-mes-remboursements').attr('href')
+    return rembLink
+  } else {
+    log('error', 'Message at login not anticipated')
+    throw new Error(errors.VENDOR_DOWN)
   }
 }
 
