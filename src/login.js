@@ -8,38 +8,33 @@ const request = requestFactory({
 
 const baseUrl = 'https://www.generali.fr'
 
-module.exports.login = function(fields) {
-  return request({
+module.exports.login = async function(fields) {
+  let $ = await request({
     url: `${baseUrl}/espace-client/public/connexion`
   })
-    .then($ => {
-      log('debug', 'Form fetched, launching login')
-      return request({
-        url: `${baseUrl}/espace-client/public/connexion`,
-        method: 'POST',
-        formData: {
-          identifiant: fields.login,
-          keyboard: encode(fields.password, getConversionTable($)),
-          op: 'Connexion',
-          form_id: 'generali_connexion_form',
-          form_build_id: $(
-            '#generali-connexion-form input[name=form_build_id]'
-          ).val()
-        }
-      })
-    })
-    .then($ => {
-      log('debug', 'Testing for login_failed')
-      if (
-        $.html().includes('Vos codes d&apos;acc&#xE8;s ne sont pas reconnus')
-      ) {
-        log('error', `Generali indicates that credentials is bad`)
-        throw new Error(errors.LOGIN_FAILED)
-      }
-      else {
-        log('info', 'Login succeed')
-      }
-    })
+  log('debug', 'Form fetched, launching login')
+  $ = await request({
+    url: `${baseUrl}/espace-client/public/connexion`,
+    method: 'POST',
+    formData: {
+      identifiant: fields.login,
+      keyboard: encode(fields.password, getConversionTable($)),
+      op: 'Connexion',
+      form_id: 'generali_connexion_form',
+      form_build_id: $(
+        '#generali-connexion-form input[name=form_build_id]'
+      ).val()
+    }
+  })
+  log('debug', 'Testing for LOGIN_FAILED')
+  if (
+    $.html().includes('Vos codes d&apos;acc&#xE8;s ne sont pas reconnus')) {
+    log('error', `Generali indicates that credentials is bad`)
+    throw new Error(errors.LOGIN_FAILED)
+  }
+  else {
+    log('info', 'Login succeed')
+  }
 }
 
 function getConversionTable($) {
