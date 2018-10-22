@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "name": "Generali",
   "type": "konnector",
   "language": "node",
@@ -8,7 +8,9 @@
   "source": "git@github.com:konnectors/cozy-konnector-generali.git",
   "editor": "Jeremy Carrier",
   "vendor_link": "https://www.generali.fr/espace-client/public/connexion",
-  "categories": ["insurance"],
+  "categories": [
+    "insurance"
+  ],
   "fields": {
     "login": {
       "type": "text",
@@ -40,14 +42,19 @@
     },
     "accounts": {
       "type": "io.cozy.accounts",
-      "verbs": ["GET"]
+      "verbs": [
+        "GET"
+      ]
     }
   },
   "developer": {
     "name": "Jeremy Carrier",
     "url": "https://github.com/carrieje"
   },
-  "langs": ["fr", "en"],
+  "langs": [
+    "fr",
+    "en"
+  ],
   "locales": {
     "fr": {
       "short_description": "Récupères vos factures Generali",
