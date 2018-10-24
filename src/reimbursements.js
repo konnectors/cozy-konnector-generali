@@ -4,13 +4,7 @@ const {
   requestFactory,
   saveBills
 } = require('cozy-konnector-libs')
-const {
-  formatDate,
-  formatName,
-  getText,
-  parseAmount,
-  parseDate
-} = require('./utils')
+const { formatDate, parseAmount, parseDate } = require('./utils')
 const cheerio = require('cheerio')
 const request = requestFactory({
   cheerio: true,
@@ -124,13 +118,11 @@ function parseSummary(el) {
     .find('.c-details__result')
     .eq(1)
     .text()
-  const amount = parseFloat(
+  const amount = parseAmount(
     $(el)
       .find('.c-details__result')
       .eq(2)
       .text()
-      .slice(0, -2) // Remove ' €'
-      .replace(' ', '') // Should parse amount >1000 if '1 000.01 €'
   )
   const currency = $(el)
     .find('.c-details__result')
@@ -154,40 +146,34 @@ function parseSubRow(row, summary) {
       .find('.col-sm-2')
       .eq(0)
       .text()
-  ) //tomatch
+  )
   const beneficiary = $(row)
     .find('.col-sm-3')
     .text()
-  const amount = parseFloat(
+  const amount = parseAmount(
     $(row)
       .find('.col-sm-2')
       .eq(1)
       .text()
-      .slice(0, -2) // Remove ' €'
-      .replace(' ', '')
-  ) // Should parse amount >1000 if '1 000.01 €'
+  )
   const currency = $(row)
     .find('.col-sm-2')
     .eq(1)
     .text()
     .slice(-1) // Last character
-  const originalAmount = parseFloat(
+  const originalAmount = parseAmount(
     $(row)
       .find('.c-donuts__legends-price')
       .eq(0)
       .text()
-      .slice(0, -2) // Remove ' €'
-      .replace(' ', '')
-  ) // Should parse amount >1000 if '1 000.01 €'
-  const socialSecurityRefund = parseFloat(
+  )
+  const socialSecurityRefund = parseAmount(
     $(row)
       .find('.c-donuts__legends-details-price')
       .find('.c-donuts__legends-line .c-donuts__legends-price')
       .eq(0)
       .text()
-      .slice(0, -2) // Remove ' €'
-      .replace(' ', '')
-  ) // Should parse amount >1000 if '1 000.01 €'
+  )
   let bill = {
     vendor: 'Generali',
     type: 'health_costs',
