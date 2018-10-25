@@ -92,22 +92,22 @@ function hasMoreResults($) {
 
 function scrape(html) {
   let bills = []
-  $ = cheerio.load(html)
+  const $ = cheerio.load(html)
   $('.c-details__infos').each((index, el) => {
     let summary
-    summary = parseSummary(el)
+    summary = parseSummary(el, $)
     $(el)
       .next('.panel-group')
       .find('.c-refund__panel')
       .each((index, subRow) => {
-        const bill = parseSubRow(subRow, summary)
+        const bill = parseSubRow(subRow, summary, $)
         bills.push(bill)
       })
   })
   return bills
 }
 
-function parseSummary(el) {
+function parseSummary(el, $) {
   const date = parseDate(
     $(el)
       .find('.c-details__result')
@@ -136,7 +136,7 @@ function parseSummary(el) {
   return { date, beneficiary, amount, currency, subUrl }
 }
 
-function parseSubRow(row, summary) {
+function parseSubRow(row, summary, $) {
   const subtype = $(row)
     .find('.col-sm-5')
     .text()
