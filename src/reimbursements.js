@@ -194,7 +194,7 @@ function parseSubRow(row, summary, $) {
       ...bill,
       isThirdPartyPayer: false,
       fileurl: baseUrl + summary.subUrl,
-      filename: `${formatDate(date)}_generali.pdf` // Refund date in filename
+      filename: `${formatDate(summary.date)}_generali.pdf` // Refund date in filename
     }
   } else {
     bill = {
