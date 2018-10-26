@@ -13,7 +13,7 @@ module.exports = new BaseKonnector(start)
 
 function start(fields) {
   return login(fields)
-    .then(() => exportReimbursements(fields.folderPath))
+    .then(rembLink => exportReimbursements(fields.folderPath, rembLink))
     .catch(err => {
       if (vendorIsDown(err)) {
         log('error', err)

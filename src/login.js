@@ -1,40 +1,44 @@
-const { log, signin } = require('cozy-konnector-libs')
+const { log, requestFactory, errors } = require('cozy-konnector-libs')
 const { encode, deduce } = require('./digipad')
+const request = requestFactory({
+  cheerio: true,
+  //  debug: true,
+  jar: true
+})
 
 const baseUrl = 'https://www.generali.fr'
 
-module.exports.login = function(fields) {
-  return signin({
+module.exports.login = async function(fields) {
+  let $ = await request({
+    url: `${baseUrl}/espace-client/public/connexion`
+  })
+  log('debug', 'Form fetched, launching login')
+  $ = await request({
     url: `${baseUrl}/espace-client/public/connexion`,
-    formSelector: '#generali-connexion-form',
-    formData: $ => ({
+    method: 'POST',
+    formData: {
       identifiant: fields.login,
-      keyboard: encode(fields.password, getConversionTable($))
-    }),
-    parse: 'cheerio',
-    validate: validateStep(1)
-  }).then(() =>
-    signin({
-      url: `${baseUrl}/espace-client/private/individuel/redirect-ece-eca`,
-      formSelector: '#generali-connexion-ece-eca-form',
-      parse: 'cheerio',
-      validate: validateStep(2)
-    })
-  )
-}
-
-const validateStep = step =>
-  function(statusCode, $) {
-    const error = $('#generali_error_messages')
-    if (error.length >= 1 && error.html().trim() !== '') {
-      log('error', `Login process [${step}/2] failed`)
-      log('info', error.text())
-      return false
-    } else {
-      log('info', `Login process [${step}/2]`)
-      return true
+      keyboard: encode(fields.password, getConversionTable($)),
+      op: 'Connexion',
+      form_id: 'generali_connexion_form',
+      form_build_id: $(
+        '#generali-connexion-form input[name=form_build_id]'
+      ).val()
     }
+  })
+  log('debug', 'Testing for LOGIN_FAILED')
+  if ($.html().includes('Vos codes d&apos;acc&#xE8;s ne sont pas reconnus')) {
+    log('error', `Generali indicates that credentials is bad`)
+    throw new Error(errors.LOGIN_FAILED)
+  } else if ($('.consulter-mes-remboursements')) {
+    log('info', 'Login succeed')
+    const rembLink = baseUrl + $('.consulter-mes-remboursements').attr('href')
+    return rembLink
+  } else {
+    log('error', 'Message at login not anticipated')
+    throw new Error(errors.VENDOR_DOWN)
   }
+}
 
 function getConversionTable($) {
   const table = new Map()
