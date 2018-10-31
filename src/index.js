@@ -18,7 +18,7 @@ async function start(fields) {
       return await exportReimbursements(fields.folderPath, rembLink)
     } else {
       log(
-        'info',
+        'warn',
         'No medical inssurance found, this version cannot do more, exiting'
       )
       return
