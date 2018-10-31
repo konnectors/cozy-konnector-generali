@@ -30,13 +30,14 @@ module.exports.login = async function(fields) {
   if ($.html().includes('Vos codes d&apos;acc&#xE8;s ne sont pas reconnus')) {
     log('error', `Generali indicates that credentials is bad`)
     throw new Error(errors.LOGIN_FAILED)
-  } else if ($('.consulter-mes-remboursements')) {
-    log('info', 'Login succeed')
+  }
+  log('info', 'Login succeed')
+
+  if ($('.consulter-mes-remboursements').attr('href')) {
     const rembLink = baseUrl + $('.consulter-mes-remboursements').attr('href')
     return rembLink
   } else {
-    log('error', 'Message at login not anticipated')
-    throw new Error(errors.VENDOR_DOWN)
+    return undefined
   }
 }
 

@@ -11,20 +11,29 @@ const { exportReimbursements } = require('./reimbursements')
 
 module.exports = new BaseKonnector(start)
 
-function start(fields) {
-  return login(fields)
-    .then(rembLink => exportReimbursements(fields.folderPath, rembLink))
-    .catch(err => {
-      if (vendorIsDown(err)) {
-        log('error', err)
-        throw new Error(errors.VENDOR_DOWN)
-      } else if (isRequestErr(err)) {
-        log('error', err)
-        throw new Error(errors.UNKNOWN_ERROR)
-      } else {
-        throw err
-      }
-    })
+async function start(fields) {
+  try {
+    const rembLink = await login(fields)
+    if (rembLink != undefined) {
+      return await exportReimbursements(fields.folderPath, rembLink)
+    } else {
+      log(
+        'info',
+        'No medical inssurance found, this version cannot do more, exiting'
+      )
+      return
+    }
+  } catch (err) {
+    if (vendorIsDown(err)) {
+      log('error', err)
+      throw new Error(errors.VENDOR_DOWN)
+    } else if (isRequestErr(err)) {
+      log('error', err)
+      throw new Error(errors.UNKNOWN_ERROR)
+    } else {
+      throw err
+    }
+  }
 }
 
 function isRequestErr(err) {
