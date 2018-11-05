@@ -1,6 +1,6 @@
 {
   "name": "cozy-konnector-generali",
-  "version": "1.2.1",
+  "version": "1.2.0",
   "description": "",
   "repository": {
     "type": "git",
@@ -41,7 +41,7 @@
     "@babel/core": "7.1.2",
     "babel-loader": "8.0.4",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
-    "copy-webpack-plugin": "4.5.4",
+    "copy-webpack-plugin": "4.6.0",
     "cozy-app-publish": "0.9.0",
     "cozy-jobs-cli": "1.5.1",
     "eslint": "5.8.0",
