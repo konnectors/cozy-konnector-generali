@@ -5,7 +5,15 @@ const SvgoInstance = require('svgo')
 
 const entry = require('./package.json').main
 
-const svgo = new SvgoInstance()
+const svgo = new SvgoInstance({
+  plugins: [
+    {
+      inlineStyles: {
+        onlyMatchedOnce: false
+      }
+    }
+  ]
+})
 
 let iconName
 try {
@@ -27,6 +35,11 @@ module.exports = {
   },
 
   module: {
+    // to ignore the warnings like :
+    // WARNING in ../libs/node_modules/bindings/bindings.js 76:22-40
+    // Critical dependency: the request of a dependency is an expression
+    // Since we cannot change this dependency. I think it won't hide more important messages
+    exprContextCritical: false,
     rules: [
       {
         test: /\.js$/,
