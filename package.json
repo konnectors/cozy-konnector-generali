@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.2.2",
-    "babel-loader": "8.0.4",
+    "babel-loader": "8.0.5",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "copy-webpack-plugin": "4.6.0",
     "cozy-app-publish": "0.10.1",
