@@ -16,17 +16,17 @@ const request = requestFactory({
 const baseUrl = 'https://www.generali.fr'
 
 /* API SPEC on Oct 2018
-* Requests
-*   - Url /espace-client/private/individuel/mes-contrats/sante/mes-remboursements/more? +args
-*   - arg start starting at element 0, give always 10 elements
-*   - arg contrat is mandatory
-*   - args date_form and date_to are optionnal on a 2 year window
-* Results
-*  - Array of Json object
-*  - Can't force time windows more than 2 years to have more results
-*  - Object with command: insert and method: before contains data with html
-*  - End detection with the obj command: remove and selector: contains .plus-de-reglements
-*/
+ * Requests
+ *   - Url /espace-client/private/individuel/mes-contrats/sante/mes-remboursements/more? +args
+ *   - arg start starting at element 0, give always 10 elements
+ *   - arg contrat is mandatory
+ *   - args date_form and date_to are optionnal on a 2 year window
+ * Results
+ *  - Array of Json object
+ *  - Can't force time windows more than 2 years to have more results
+ *  - Object with command: insert and method: before contains data with html
+ *  - End detection with the obj command: remove and selector: contains .plus-de-reglements
+ */
 
 module.exports.exportReimbursements = async function(folderPath, rembLink) {
   const apiUrl =
