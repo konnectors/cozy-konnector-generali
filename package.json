@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "cozy-konnector-libs": "4.32.0",
-    "request-promise": "4.2.4"
+    "request-promise": "4.2.5"
   },
   "devDependencies": {
     "@babel/core": "7.6.4",
