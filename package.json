@@ -41,7 +41,7 @@
     "request-promise": "4.2.5"
   },
   "devDependencies": {
-    "@babel/core": "7.9.6",
+    "@babel/core": "7.10.2",
     "babel-loader": "8.1.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "copy-webpack-plugin": "6.0.1",
