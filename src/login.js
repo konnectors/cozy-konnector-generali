@@ -8,7 +8,7 @@ const request = requestFactory({
 
 const baseUrl = 'https://www.generali.fr'
 
-module.exports.login = async function(fields) {
+module.exports.login = async function (fields) {
   let $ = await request({
     url: `${baseUrl}/espace-client/public/connexion`
   })
@@ -44,11 +44,8 @@ function getConversionTable($) {
   const table = new Map()
   $('#generali-connexion-form')
     .find('button.c-field__keyboard__btn')
-    .each(function() {
-      const image = $(this)
-        .attr('style')
-        .split(' ')
-        .pop()
+    .each(function () {
+      const image = $(this).attr('style').split(' ').pop()
       // NOTE: See #1135 on github@cheeriojs/cheerio
       // .css() is bugged, and prevent a correct parsing in our situation
       const digit = deduce.get(image)

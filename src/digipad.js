@@ -1,10 +1,10 @@
-module.exports.encode = function(passcode, table) {
+module.exports.encode = function (passcode, table) {
   // passcode := '001'
   // table    := Map {'0' => '9543', …}
   // return   := '9543|9543|815|'
   return passcode
     .split('')
-    .map(function(d) {
+    .map(function (d) {
       return table.get(d)
     })
     .join('|')

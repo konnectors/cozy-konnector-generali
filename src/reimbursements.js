@@ -28,7 +28,7 @@ const baseUrl = 'https://www.generali.fr'
  *  - End detection with the obj command: remove and selector: contains .plus-de-reglements
  */
 
-module.exports.exportReimbursements = async function(folderPath, rembLink) {
+module.exports.exportReimbursements = async function (folderPath, rembLink) {
   const apiUrl =
     baseUrl +
     '/espace-client/private/individuel/mes-contrats/sante/mes-remboursements/more?'
@@ -108,64 +108,23 @@ function scrape(html) {
 }
 
 function parseSummary(el, $) {
-  const date = parseDate(
-    $(el)
-      .find('.c-details__result')
-      .eq(0)
-      .text()
-  )
-  const beneficiary = $(el)
-    .find('.c-details__result')
-    .eq(1)
-    .text()
-  const amount = parseAmount(
-    $(el)
-      .find('.c-details__result')
-      .eq(2)
-      .text()
-  )
-  const currency = $(el)
-    .find('.c-details__result')
-    .eq(2)
-    .text()
-    .slice(-1) // Last character
-  const subUrl = $(el)
-    .find('.telecharger-reglement a')
-    .attr('href')
+  const date = parseDate($(el).find('.c-details__result').eq(0).text())
+  const beneficiary = $(el).find('.c-details__result').eq(1).text()
+  const amount = parseAmount($(el).find('.c-details__result').eq(2).text())
+  const currency = $(el).find('.c-details__result').eq(2).text().slice(-1) // Last character
+  const subUrl = $(el).find('.telecharger-reglement a').attr('href')
 
   return { date, beneficiary, amount, currency, subUrl }
 }
 
 function parseSubRow(row, summary, $) {
-  const subtype = $(row)
-    .find('.col-sm-5')
-    .text()
-    .trim()
-  const date = parseDate(
-    $(row)
-      .find('.col-sm-2')
-      .eq(0)
-      .text()
-  )
-  const beneficiary = $(row)
-    .find('.col-sm-3')
-    .text()
-  const amount = parseAmount(
-    $(row)
-      .find('.col-sm-2')
-      .eq(1)
-      .text()
-  )
-  const currency = $(row)
-    .find('.col-sm-2')
-    .eq(1)
-    .text()
-    .slice(-1) // Last character
+  const subtype = $(row).find('.col-sm-5').text().trim()
+  const date = parseDate($(row).find('.col-sm-2').eq(0).text())
+  const beneficiary = $(row).find('.col-sm-3').text()
+  const amount = parseAmount($(row).find('.col-sm-2').eq(1).text())
+  const currency = $(row).find('.col-sm-2').eq(1).text().slice(-1) // Last character
   const originalAmount = parseAmount(
-    $(row)
-      .find('.c-donuts__legends-price')
-      .eq(0)
-      .text()
+    $(row).find('.c-donuts__legends-price').eq(0).text()
   )
   const socialSecurityRefund = parseAmount(
     $(row)

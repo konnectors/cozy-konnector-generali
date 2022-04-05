@@ -1,9 +1,9 @@
 const { encode, deduce } = require('../src/digipad')
 
-test('deduce', function() {
+test('deduce', function () {
   expect(deduce.size).toBe(10)
   const digits = []
-  deduce.forEach(function(value) {
+  deduce.forEach(function (value) {
     digits.push(value)
   })
   expect(digits.sort()).toEqual('0123456789'.split('').sort())
@@ -22,7 +22,7 @@ const table = new Map([
   ['9', 'j']
 ])
 
-test('encode', function() {
+test('encode', function () {
   const passcode = '010203'
   expect(encode(passcode, table)).toEqual('a|b|a|c|a|d|')
 })
